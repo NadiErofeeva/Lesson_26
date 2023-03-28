@@ -1,8 +1,10 @@
-const getData = fetch('db.json')
+const getData = () => fetch('db.json')
     .then(response => response.json())
     .then(user => {
-        console.log(user)
-        return user
+        sendData('https://jsonplaceholder.typicode.com/posts', JSON.stringify(user))
+            .then(data => {
+                console.log(data)
+            })
     })
     .catch(error => console.log(error))
 
@@ -15,11 +17,4 @@ const sendData = (url, data) => {
         },
     }).then(response => response.json())
 }
-
-sendData('https://jsonplaceholder.typicode.com/posts', JSON.stringify(getData))
-    .then(data => {
-        console.log(data)
-    })
-
-
-
+getData();
