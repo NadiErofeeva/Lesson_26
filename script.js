@@ -1,12 +1,11 @@
-const getData = fetch('db.json')
+const getData = () => fetch('db.json')
     .then(response => response.json())
     .then(user => {
-        console.log(user)
-        return user
+        sendData('https://jsonplaceholder.typicode.com/posts', user)
     })
     .catch(error => console.log(error))
 
-const sendData = (url, data) => {
+/*const sendData = (url, data) => {
    return fetch( url,{
         method: 'POST',
         body: data,
@@ -14,12 +13,17 @@ const sendData = (url, data) => {
             'Content-type': 'application/json; charset=UTF-8',
         },
     }).then(response => response.json())
-}
+}*/
 
-sendData('https://jsonplaceholder.typicode.com/posts', JSON.stringify(getData))
-    .then(data => {
-        console.log(data)
+function sendData (url, data) {
+    const request = new XMLHttpRequest();
+    request.open('POST', url);
+    request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    request.send(JSON.stringify(data));
+
+    request.addEventListener('load', function () {
+        console.log(JSON.parse(this.responseText));
     })
-
-
+}
+getData();
 
